@@ -63,15 +63,6 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .box:nth-child(1) { background-color: #D9534F; }
-        .box:nth-child(2) { background-color: #F0AD4E; }
-        .box:nth-child(3) { background-color: #5CB85C; }
-        .box:nth-child(4) { background-color: #5BC0DE; }
-        .box:nth-child(5) { background-color: #428BCA; }
-        .box:nth-child(6) { background-color: #D9534F; }
-        .box:nth-child(7) { background-color: #F0AD4E; }
-        .box:nth-child(8) { background-color: #5CB85C; }
-
         .pagination {
             margin: 20px 0;
             display: flex;
@@ -122,15 +113,30 @@
             return data;
         }
 
+        function getBackgroundColor(index) {
+            // Calculate a unique hue value based on the index
+            const hue = (index * 40) % 360;
+            return `hsl(${hue}, 70%, 60%)`;
+        }
+
         function updateMovies(movies) {
             container.innerHTML = '';
-            movies.forEach((movie) => {
+            movies.forEach((movie, index) => {
                 const box = document.createElement("div");
                 box.className = "box";
-                box.innerHTML = `
-                    <img src="${movie.poster}" alt="${movie.title}" onerror="this.onerror=null; this.src='${defaultImageUrl}';">
-                    <div>${movie.title}</div>
-                `;
+                box.style.backgroundColor = getBackgroundColor(index);
+
+                if (movie.poster) {
+                    box.innerHTML = `
+                        <img src="${movie.poster}" alt="${movie.title}" onerror="this.onerror=null; this.src='${defaultImageUrl}';">
+                        <div>${movie.title}</div>
+                    `;
+                } else {
+                    box.innerHTML = `
+                        <div>${movie.title}</div>
+                    `;
+                }
+
                 container.appendChild(box);
             });
         }
