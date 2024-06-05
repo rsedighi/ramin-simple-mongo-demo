@@ -32,7 +32,7 @@
 
         .box {
             width: 200px;
-            height: 300px;
+            height: 320px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -56,6 +56,14 @@
 
         .box div {
             padding: 10px;
+        }
+
+        .reviews {
+            background-color: rgba(0, 0, 0, 0.6);
+            width: 100%;
+            text-align: center;
+            padding: 5px 0;
+            font-size: 0.9em;
         }
 
         .box:hover {
@@ -126,16 +134,14 @@
                 box.className = "box";
                 box.style.backgroundColor = getBackgroundColor(index);
 
-                if (movie.poster) {
-                    box.innerHTML = `
-                        <img src="${movie.poster}" alt="${movie.title}" onerror="this.onerror=null; this.src='${defaultImageUrl}';">
-                        <div>${movie.title}</div>
-                    `;
-                } else {
-                    box.innerHTML = `
-                        <div>${movie.title}</div>
-                    `;
-                }
+                const poster = movie.poster ? `<img src="${movie.poster}" alt="${movie.title}" onerror="this.onerror=null; this.src='${defaultImageUrl}';">` : '';
+                const numReviews = movie.tomatoes && movie.tomatoes.viewer ? movie.tomatoes.viewer.numReviews : 0;
+
+                box.innerHTML = `
+                    ${poster}
+                    <div>${movie.title}</div>
+                    <div class="reviews">🍅 ${numReviews} Reviews</div>
+                `;
 
                 container.appendChild(box);
             });
