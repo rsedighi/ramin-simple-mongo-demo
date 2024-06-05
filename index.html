@@ -51,6 +51,11 @@
         .box img {
             width: 100%;
             height: auto;
+            flex-grow: 1;
+        }
+
+        .box div {
+            padding: 10px;
         }
 
         .box:hover {
@@ -109,6 +114,7 @@
         const container = document.getElementById("movies");
         const prevPageButton = document.getElementById("prevPage");
         const nextPageButton = document.getElementById("nextPage");
+        const defaultImageUrl = 'path/to/default/image.jpg'; // Provide a valid default image URL
 
         async function fetchMovies(page) {
             const response = await fetch(`/.netlify/functions/get_movies?page=${page}`);
@@ -122,7 +128,7 @@
                 const box = document.createElement("div");
                 box.className = "box";
                 box.innerHTML = `
-                    <img src="${movie.poster}" alt="${movie.title}">
+                    <img src="${movie.poster}" alt="${movie.title}" onerror="this.onerror=null; this.src='${defaultImageUrl}';">
                     <div>${movie.title}</div>
                 `;
                 container.appendChild(box);
