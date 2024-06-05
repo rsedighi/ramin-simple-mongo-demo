@@ -28,14 +28,15 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            gap: 10px;
         }
 
         .box {
-            width: 200px;
-            height: 320px;
+            width: 220px;
+            height: 360px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             margin: 10px;
             color: white;
@@ -51,11 +52,13 @@
         .box img {
             width: 100%;
             height: auto;
-            flex-grow: 1;
         }
 
-        .box div {
+        .box .title {
             padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .reviews {
@@ -96,6 +99,13 @@
         .pagination button:disabled {
             background-color: #ddd;
             cursor: not-allowed;
+        }
+
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.5s;
+        }
+        .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+            opacity: 0;
         }
     </style>
 </head>
@@ -139,7 +149,7 @@
 
                 box.innerHTML = `
                     ${poster}
-                    <div>${movie.title}</div>
+                    <div class="title">${movie.title}</div>
                     <div class="reviews">🍅 ${numReviews} Reviews</div>
                 `;
 
@@ -148,8 +158,12 @@
         }
 
         async function loadPage(page) {
+            container.classList.add('fade-leave');
             const data = await fetchMovies(page);
             updateMovies(data.results);
+            container.classList.remove('fade-leave');
+            container.classList.add('fade-enter');
+            setTimeout(() => container.classList.remove('fade-enter'), 500);
 
             currentPage = page;
             prevPageButton.disabled = currentPage === 1;
